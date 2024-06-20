@@ -9,12 +9,48 @@ import (
 	"strings"
 )
 
+var i = 0
+
+func Inc() int {
+	i = i + 1
+	return i
+}
+
+type HttpRequest struct {
+	StrArray []string         `json:"strArray"`
+	StrMap   map[string]int64 `json:"strMap"`
+	Str      string           `json:"Str"`
+	intValue int64            `json:"intValue"`
+}
+
+type HttpResponse struct {
+	Str      string           `json:"Str"`
+	StrArray []string         `json:"strArray"`
+	StrMap   map[string]int64 `json:"strMap"`
+}
+
 func Add(x, y int64) int64 {
 	return x + y
 }
 
 func ToUpperCase(str string) string {
 	return strings.ToUpper(str)
+}
+
+func StructInvoke(req *HttpRequest) *HttpResponse {
+	resp := &HttpResponse{}
+	resp.Str = req.Str
+	arr := make([]string, len(req.StrArray))
+	makeUp := make(map[string]int64)
+	for i, s := range req.StrArray {
+		arr[i] = s
+	}
+	resp.StrArray = arr
+	for s, i := range req.StrMap {
+		makeUp[s] = i
+	}
+	resp.StrMap = makeUp
+	return resp
 }
 
 func ReqThird(reqPath string, url string) string {
